@@ -3,23 +3,23 @@ library('e1071')
 #Loading a preprocessed and cleaned file with descriptors and obs Logp
 logp <- read.table("logp.txt", header=T, sep="\t", as.is=T )
 View(logp)
-LogpTraining <-logp[1:11370,]
+LogpTraining <-logp[1:1370,]
 LogpTest <-logp[11371:14207,]
 dim(LogpTraining)
 dim(LogpTest)
 #splitting the dataset into training and test set
 MeasuredLogpTraining<-LogpTraining$LogP
-MeasuredLogpTest<-LogpTraining$LogP
+MeasuredLogpTest<-LogpTest$LogP
 #Assigning measured/observed logP values into a separate variable
 LogPSVM <- svm(LogP~., data= LogpTraining, cost = 150, epsilon = 0.05, gamma = 0.00014)
 PredLogPtrainingSVM<-predict(LogPSVM, LogpTraining)
-CorrLogPtrainingSVM<-lm(PredLogPtrainingSVM ~ MeasuredLogPTraining)
+CorrLogPtrainingSVM<-lm(PredLogPtrainingSVM ~ MeasuredLogpTraining)
 summary(CorrLogPtrainingSVM)
 
 # Predict logP from the test set
-PredLogPtestSVM<-predict(LogPSVM, LogPdata600BitsTest)
+PredLogPtestSVM<-predict(LogPSVM, LogpTest)
 # Correlation between measured and predicted logP values for the test set
-CorrLogPtestSVM<-lm(PredLogPtestSVM ~ MeasuredLogPTest)
+CorrLogPtestSVM<-lm(PredLogPtestSVM ~ MeasuredLogpTest)
 summary(CorrLogPtestSVM)
 
 # Apply the built-in cross validation feature. Set the argument cross to 10.
