@@ -15,13 +15,11 @@ LogPSVM <- svm(LogP~., data= LogpTraining, cost = 150, epsilon = 0.05, gamma = 0
 PredLogPtrainingSVM<-predict(LogPSVM, LogpTraining)
 CorrLogPtrainingSVM<-lm(PredLogPtrainingSVM ~ MeasuredLogpTraining)
 summary(CorrLogPtrainingSVM)
-
 # Predict logP from the test set
 PredLogPtestSVM<-predict(LogPSVM, LogpTest)
 # Correlation between measured and predicted logP values for the test set
 CorrLogPtestSVM<-lm(PredLogPtestSVM ~ MeasuredLogpTest)
 summary(CorrLogPtestSVM)
-
 # Apply the built-in cross validation feature. Set the argument cross to 10.
 LogPSVMcv <- svm(LogP~., data = LogPdata600BitsTraining, cross = 10, cost = 150, epsilon = 0.05, gamma = 0.00014)
 # Summary for 10-fold cross validation.
